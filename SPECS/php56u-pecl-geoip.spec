@@ -124,5 +124,5 @@ fi
 * Tue May 01 2012 Dustin Henry Offutt <dustin.offutt@rackspace.com> 1.0.8-1.ius
 - Building for GeoIP version 1.0.8
 
-* Wed Mar 28 2011 Jeffrey Ness <jeffrey.ness@rackspace.com> 1.0.7-1.ius
+* Mon Mar 28 2011 Jeffrey Ness <jeffrey.ness@rackspace.com> 1.0.7-1.ius
 - Porting from EPEL to IUS
