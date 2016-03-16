@@ -3,13 +3,12 @@
 %{!?php_extdir: %{expand: %%global php_extdir %(php-config --extension-dir)}}
 
 %define pecl_name geoip
-%define real_name php-pecl-geoip
 %define php_base php56u
 %global ini_name 40-%{pecl_name}.ini
 
 Name: %{php_base}-pecl-geoip
 Version: 1.0.8
-Release: 7.ius%{?dist}
+Release: 8.ius%{?dist}
 Summary: Extension to map IP addresses to geographic places
 Group: Development/Languages
 License: PHP
@@ -28,17 +27,24 @@ Requires: %{php_base}-api = %{php_apiver}
 Requires(post): %{php_base}-pear
 Requires(postun): %{php_base}-pear
 
+# provide the stock name
+Provides: php-pecl-%{pecl_name} = %{version}
+Provides: php-pecl-%{pecl_name}%{?_isa} = %{version}
+
+# provide the stock and IUS names without pecl
 Provides: php-%{pecl_name} = %{version}
 Provides: php-%{pecl_name}%{?_isa} = %{version}
-Provides: php-pecl(%{pecl_name}) = %{version}
-Provides: php-pecl(%{pecl_name})%{?_isa} = %{version}
 Provides: %{php_base}-%{pecl_name} = %{version}
 Provides: %{php_base}-%{pecl_name}%{?_isa} = %{version}
+
+# provide the stock and IUS names in pecl() format
+Provides: php-pecl(%{pecl_name}) = %{version}
+Provides: php-pecl(%{pecl_name})%{?_isa} = %{version}
 Provides: %{php_base}-pecl(%{pecl_name}) = %{version}
 Provides: %{php_base}-pecl(%{pecl_name})%{?_isa} = %{version}
 
-Provides: %{real_name} = %{version}
-Conflicts: %{real_name} < %{version}
+# conflict with the stock name
+Conflicts: php-pecl-%{pecl_name} < %{version}
 
 # RPM 4.8
 %{?filter_provides_in: %filter_provides_in %{php_extdir}/.*\.so$}
@@ -101,6 +107,9 @@ fi
 
 
 %changelog
+* Wed Mar 16 2016 Carl George <carl.george@rackspace.com> - 1.0.8-8.ius
+- Clean up provides
+
 * Fri Oct 24 2014 Ben Harper <ben.harper@rackspace.com> - 1.0.8-7.ius
 - porting from php55u-pecl-geoip
 
