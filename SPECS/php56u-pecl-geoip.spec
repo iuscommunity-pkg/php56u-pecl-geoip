@@ -54,8 +54,6 @@ database
 
 %prep
 %setup -c -q
-[ -f package2.xml ] || %{__mv} package.xml package2.xml
-%{__mv} package2.xml %{pecl_name}-%{version}/%{pecl_name}.xml
 
 
 %build
@@ -66,7 +64,7 @@ phpize
 
 
 %install
-cd %{pecl_name}-%{version}
+pushd %{pecl_name}-%{version}
 %{__make} install INSTALL_ROOT=%{buildroot} INSTALL="install -p"
 
 %{__mkdir_p} %{buildroot}%{php_inidir}
@@ -74,14 +72,14 @@ cd %{pecl_name}-%{version}
 ; Enable %{pecl_name} extension module
 extension=%{pecl_name}.so
 EOF
+popd
 
-%{__mkdir_p} %{buildroot}%{pecl_xmldir}
-%{__install} -p -m 644 %{pecl_name}.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+%{__install} -Dpm 644 package.xml %{buildroot}%{pecl_xmldir}/%{pecl_name}.xml
 
 
 %if 0%{?pecl_install:1}
 %post
-%{pecl_install} %{pecl_xmldir}/%{name}.xml >/dev/null || :
+%{pecl_install} %{pecl_xmldir}/%{pecl_name}.xml >/dev/null || :
 %endif
 
 
@@ -97,13 +95,14 @@ fi
 %doc %{pecl_name}-%{version}/{README,ChangeLog}
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
-%{pecl_xmldir}/%{name}.xml
+%{pecl_xmldir}/%{pecl_name}.xml
 
 
 %changelog
 * Wed Mar 16 2016 Carl George <carl.george@rackspace.com> - 1.0.8-8.ius
 - Clean up provides
 - Clean up filters
+- Install package.xml as %%{pecl_name}.xml, not %%{name}.xml
 
 * Fri Oct 24 2014 Ben Harper <ben.harper@rackspace.com> - 1.0.8-7.ius
 - porting from php55u-pecl-geoip
