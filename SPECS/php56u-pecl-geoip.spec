@@ -59,13 +59,13 @@ database
 %build
 cd %{pecl_name}-%{version}
 phpize
-%configure
+%{configure} --with-%{pecl_name}=%{prefix} --with-php-config=%{_bindir}/php-config
 %{__make} %{?_smp_mflags}
 
 
 %install
 pushd %{pecl_name}-%{version}
-%{__make} install INSTALL_ROOT=%{buildroot} INSTALL="install -p"
+%{__make} install INSTALL_ROOT=%{buildroot}
 
 %{__mkdir_p} %{buildroot}%{php_inidir}
 %{__cat} > %{buildroot}%{php_inidir}/%{ini_name} << 'EOF'
@@ -103,6 +103,7 @@ fi
 - Clean up provides
 - Clean up filters
 - Install package.xml as %%{pecl_name}.xml, not %%{name}.xml
+- Use same configure and make commands as Fedora
 
 * Fri Oct 24 2014 Ben Harper <ben.harper@rackspace.com> - 1.0.8-7.ius
 - porting from php55u-pecl-geoip
