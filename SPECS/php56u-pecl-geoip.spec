@@ -4,7 +4,7 @@
 
 Name: %{php_base}-pecl-geoip
 Version: 1.0.8
-Release: 8.ius%{?dist}
+Release: 9.ius%{?dist}
 Summary: Extension to map IP addresses to geographic places
 Group: Development/Languages
 License: PHP
@@ -40,9 +40,8 @@ Conflicts: php-pecl-%{pecl_name} < %{version}
 
 # RPM 4.8
 %{?filter_provides_in: %filter_provides_in %{php_extdir}/.*\.so$}
+%{?filter_provides_in: %filter_provides_in %{php_ztsextdir}/.*\.so$}
 %{?filter_setup}
-# RPM 4.9
-%global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}%{php_extdir}/.*\\.so$
 
 
 %description
@@ -99,7 +98,10 @@ fi
 
 
 %changelog
-* Wed Mar 16 2016 Carl George <carl.george@rackspace.com> - 1.0.8-8.ius
+* Thu Jun 16 2016 Ben Harper <ben.harper@rackspace.com> - 1.0.8-9.ius
+- update filters to include zts
+
+* Wed Mar 16 2016 Carl George <carl.george@rackspace.com> - 1.0.8-8.iss
 - Clean up provides
 - Clean up filters
 - Install package.xml as %%{pecl_name}.xml, not %%{name}.xml
